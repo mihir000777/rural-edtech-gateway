@@ -1,56 +1,148 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Rural EdTech Gateway</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <title>Rural EdTech Gateway</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
+
 <body>
-<div class="container">
-  <header>
-    <div class="logo">R-EdTech</div>
-    <div>
-      <h1 id="siteTitle">The Rural EdTech Gateway</h1>
-      <p class="lead" id="siteLead">Sustainable digital learning for remote Indian villages — prototype frontend</p>
-    </div>
-  </header>
+  <div class="container">
+    <header>
+      <div class="logo">R-EdTech</div>
+      <div>
+        <h1 id="siteTitle">The Rural EdTech Gateway</h1>
+        <p class="lead" id="siteLead">
+          Sustainable digital learning for remote Indian villages — prototype frontend
+        </p>
+      </div>
+    </header>
 
-  <nav>
-    <button class="btn primary" data-view="library" id="btnLibrary">Digital Library</button>
-    <button class="btn" data-view="training" id="btnTraining">Training & Skills</button>
-    <button class="btn" data-view="mentorship" id="btnMentorship">Mentorship</button>
-    <button class="btn" data-view="sync" id="btnSync">Offline Sync (Admin)</button>
-    <button class="btn" data-view="impact" id="btnImpact">Impact & Partners</button>
+    <nav>
+      <button class="btn primary" data-view="library">Digital Library</button>
+      <button class="btn" data-view="training">Training & Skills</button>
+      <button class="btn" data-view="mentorship">Mentorship</button>
+      <button class="btn" data-view="sync">Offline Sync (Admin)</button>
+      <button class="btn" data-view="impact">Impact & Partners</button>
 
-    <div class="rightControls">
-      <label for="lang">Language:</label>
-      <select id="lang">
-        <option value="en">English</option>
-        <option value="hi">हिन्दी</option>
-        <option value="kn">ಕನ್ನಡ</option>
-      </select>
-      <button class="btn ghost" id="loginBtn">Login</button>
-      <button class="btn ghost" id="themeBtn">Dark Mode</button>
-    </div>
-  </nav>
+      <div class="langPanel">
+        <label>Language:</label>
+        <select id="lang">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="kn">ಕನ್ನಡ</option>
+        </select>
+        <button class="btn ghost" id="loginBtn">Login</button>
+        <button class="btn ghost" id="themeToggle">Dark Mode</button>
+      </div>
+    </nav>
 
-  <main class="grid">
-    <section id="content"></section>
-    <aside id="rightCol" class="card">
-      <h3 id="statsTitle">Quick Stats</h3>
-      <ul>
-        <li><strong>24%</strong> rural residents with basic digital skills</li>
-        <li><strong>18.47%</strong> rural schools with internet</li>
-        <li><strong>Target:</strong> 25% ↑ high-school completion</li>
-      </ul>
-    </aside>
-  </main>
+    <main>
+      <!-- LEFT PANEL -->
+      <section class="card" id="mainPanel">
 
-  <footer id="footer">
-    <p>Prototype for Educational Technology Initiative, Dept. of Rural Development — BMS Institute of Technology and Management</p>
-  </footer>
-</div>
-<script src="js/main.js"></script>
+        <!-- Dashboard -->
+        <div id="view-dashboard" class="view active">
+          <h2>Dashboard</h2>
+          <div class="modules">
+            <div class="module" data-target="library"><h3>📚 Digital Library</h3></div>
+            <div class="module" data-target="training"><h3>🎓 Training</h3></div>
+            <div class="module" data-target="mentorship"><h3>🤝 Mentorship</h3></div>
+            <div class="module" data-target="sync"><h3>📡 Offline Sync</h3></div>
+            <div class="module" data-target="impact"><h3>📈 Impact</h3></div>
+            <div class="module" data-target="about"><h3>ℹ️ About</h3></div>
+          </div>
+        </div>
+
+        <!-- Library -->
+        <div id="view-library" class="view">
+          <h2>Digital Library</h2>
+
+          <div class="toolbar">
+            <label>Grade <select id="filterGrade"></select></label>
+            <label>Subject <select id="filterSubject"></select></label>
+            <label>Search <input type="search" id="search"></label>
+            <button class="btn" id="toggleViewLang">Toggle View Lang</button>
+            <button class="btn" id="downloadSel">Export Selected</button>
+          </div>
+
+          <div class="list" id="libraryList"></div>
+          <button class="btn backBtn">← Back</button>
+        </div>
+
+        <!-- Training -->
+        <div id="view-training" class="view">
+          <h2>Training & Skills</h2>
+          <div class="list" id="trainingList"></div>
+          <button class="btn backBtn">← Back</button>
+        </div>
+
+        <!-- Mentorship -->
+        <div id="view-mentorship" class="view">
+          <h2>Mentorship Scheduling</h2>
+          <form id="apptForm">
+            <label>Role <select id="apptRole"><option>Student</option><option>Teacher</option></select></label>
+            <label>Name <input id="apptName" required></label>
+            <label>Date <input type="date" id="apptDate" required></label>
+            <label>Time <input type="time" id="apptTime" required></label>
+            <button class="btn primary" id="saveAppt">Schedule</button>
+          </form>
+          <h3>Upcoming Appointments</h3>
+          <div class="list" id="appointmentsList"></div>
+          <button class="btn" id="exportAppts">Export Appointments</button>
+          <button class="btn backBtn">← Back</button>
+        </div>
+
+        <!-- Offline Sync -->
+        <div id="view-sync" class="view">
+          <h2>Offline Sync Admin</h2>
+          <label>Password <input id="adminPass" type="password"></label>
+          <button class="btn" id="adminLogin">Unlock</button>
+          <div id="syncControls" style="display:none">
+            <label><input type="checkbox" data-package="library" checked> Library</label>
+            <label><input type="checkbox" data-package="training" checked> Training</label>
+            <label><input type="checkbox" data-package="appointments"> Appointments</label>
+            <button class="btn primary" id="exportPackage">Export</button>
+            <button class="btn" id="previewPkg">Preview</button>
+            <pre id="pkgPreview"></pre>
+          </div>
+          <button class="btn backBtn">← Back</button>
+        </div>
+
+        <!-- Impact -->
+        <div id="view-impact" class="view">
+          <h2>Impact & Partners</h2>
+          <canvas id="impactChart"></canvas>
+          <button class="btn backBtn">← Back</button>
+        </div>
+
+        <!-- About -->
+        <div id="view-about" class="view">
+          <h2>About Project</h2>
+          <p>This system was created for sustainable, low-bandwidth rural education delivery.</p>
+          <button class="btn backBtn">← Back</button>
+        </div>
+
+      </section>
+
+      <!-- RIGHT PANEL -->
+      <aside class="card">
+        <h3>Quick Stats</h3>
+        <ul>
+          <li>24% rural residents have basic digital skills</li>
+          <li>18.47% rural schools have internet</li>
+          <li>Target: 25% ↑ completion</li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer>Prototype by BMS Institute of Technology</footer>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
+
+
