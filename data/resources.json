@@ -1,4 +1,22 @@
 [
-  {"id":1,"title":{"en":"Numbers","hi":"संख्याएँ","kn":"ಸಂಖ್ಯೆಗಳು"},"grade":1,"subject":"Math"},
-  {"id":2,"title":{"en":"Plants","hi":"पौधे","kn":"ಸಸ್ಯಗಳು"},"grade":3,"subject":"Science"}
+  {
+    "id": 1,
+    "grade": 1,
+    "subject": "Math",
+    "title": {
+      "en": "Numbers — Grade 1 — Math",
+      "hi": "संख्याएँ — कक्षा 1 — गणित",
+      "kn": "ಸಂಖ್ಯೆಗಳು — ತರಗತಿ 1 — ಗಣಿತ"
+    }
+  },
+  {
+    "id": 2,
+    "grade": 3,
+    "subject": "Science",
+    "title": {
+      "en": "Plants — Grade 3 — Science",
+      "hi": "पौधे — कक्षा 3 — विज्ञान",
+      "kn": "ಸಸ್ಯಗಳು — ತರಗತಿ 3 — ವಿಜ್ಞಾನ"
+    }
+  }
 ]
