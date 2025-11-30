@@ -1,80 +1,80 @@
-const langSelect = document.getElementById('lang');
-const content = document.getElementById('content');
-const themeBtn = document.getElementById('themeBtn');
-let currentLang = 'en';
-let darkMode = false;
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-// sample resources
-const resources = [
-  {id:1, title:{en:'Numbers', hi:'संख्याएँ', kn:'ಸಂಖ್ಯೆಗಳು'}, grade:1, subject:'Math'},
-  {id:2, title:{en:'Plants', hi:'पौधे', kn:'ಸಸ್ಯಗಳು'}, grade:3, subject:'Science'}
-];
-const trainings = [
-  {id:1, title:{en:'Using Tablets', hi:'टैबलेट का उपयोग', kn:'ಟ್ಯಾಬ್ಲೆಟ್ ಬಳಸು'}},
-];
+let currentLang = localStorage.getItem("lang") || "en";
+$("#lang").value = currentLang;
 
-// translations for UI
-const translations = {
-  library:{en:'Digital Library', hi:'डिजिटल पुस्तकालय', kn:'ಡಿಜಿಟಲ್ ಲೈಬ್ರರಿ'},
-  training:{en:'Training & Skills', hi:'प्रशिक्षण और कौशल', kn:'ಪ್ರಶಿಕ್ಷಣ ಮತ್ತು ಕೌಶಲ್ಯಗಳು'},
-  mentorship:{en:'Mentorship', hi:'मेंटरशिप', kn:'ಮೆಂಟಾರ್‌ಶಿಪ್'},
-  sync:{en:'Offline Sync', hi:'ऑफ़लाइन सिंक', kn:'ಆಫ್‌ಲೈನ್ ಸಿಂಕ್'},
-  impact:{en:'Impact & Partners', hi:'प्रभाव और साझेदार', kn:'ಪ್ರಭಾವ ಮತ್ತು ಪಾಲುದಾರರು'},
-  login:{en:'Login', hi:'लॉगिन', kn:'ಲಾಗಿನ್'},
-  dark:{en:'Dark Mode', hi:'डार्क मोड', kn:'ಡಾರ್ಕ್ ಮೋಡ್'},
-  light:{en:'Light Mode', hi:'लाइट मोड', kn:'ಲೈಟ್ ಮೋಡ್'}
+/* ============ VIEW SWITCHING ============== */
+function showView(name){
+  $$(".view").forEach(v => v.classList.remove("active"));
+  $("#view-" + name).classList.add("active");
+}
+$$("button[data-view]").forEach(btn => btn.onclick = () => showView(btn.dataset.view));
+$$(".backBtn").forEach(b => b.onclick = () => showView("dashboard"));
+
+/* ============ LOAD JSON FILES ============== */
+let resources = [];
+let trainings = [];
+
+async function loadData(){
+  resources = await fetch("data/resources.json").then(r=>r.json());
+  trainings = await fetch("data/trainings.json").then(r=>r.json());
+  renderLibrary();
+  renderTraining();
+}
+loadData();
+
+/* ============ LIBRARY ============== */
+function renderLibrary(){
+  const list = $("#libraryList");
+  list.innerHTML = "";
+
+  resources.forEach(r=>{
+    const title = r.title[currentLang] || r.title.en;
+    list.innerHTML += `
+      <div class="resource">
+        <div><strong>${title}</strong></div>
+        <button class="btn" data-id="${r.id}">Download</button>
+      </div>`;
+  });
+}
+
+/* ============ TRAINING ============== */
+function renderTraining(){
+  const list = $("#trainingList");
+  list.innerHTML = "";
+  trainings.forEach(t=>{
+    const title = t.title[currentLang] || t.title.en;
+    list.innerHTML += `
+      <div class="resource">
+        <div><strong>${title}</strong></div>
+        <button class="btn" data-tid="${t.id}">Download</button>
+      </div>`;
+  });
+}
+
+/* ============ LANGUAGE SWITCH ============== */
+$("#lang").onchange = () => {
+  currentLang = $("#lang").value;
+  localStorage.setItem("lang", currentLang);
+  renderLibrary();
+  renderTraining();
 };
 
-// handle theme
-themeBtn.addEventListener('click', ()=>{
-  darkMode=!darkMode;
-  document.documentElement.setAttribute('data-theme', darkMode?'dark':'light');
-  themeBtn.textContent=darkMode?translations.light[currentLang]:translations.dark[currentLang];
-});
+/* ============ DARK MODE ============== */
+$("#themeToggle").onclick = () => {
+  document.body.classList.toggle("dark");
+};
 
-// handle language change
-langSelect.addEventListener('change', ()=>{
-  currentLang=langSelect.value;
-  renderLibrary();
-  themeBtn.textContent=darkMode?translations.light[currentLang]:translations.dark[currentLang];
-});
-
-// view buttons
-document.querySelectorAll('[data-view]').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const view=btn.dataset.view;
-    if(view==='library') renderLibrary();
-    if(view==='training') renderTraining();
-  });
-});
-
-// render library
-function renderLibrary(){
-  content.innerHTML='';
-  const h=document.createElement('h2');
-  h.textContent=translations.library[currentLang];
-  content.appendChild(h);
-  resources.forEach(r=>{
-    const div=document.createElement('div');
-    div.className='card';
-    div.textContent=`${r.title[currentLang]} — Grade ${r.grade} — ${r.subject}`;
-    content.appendChild(div);
+/* ============ IMPACT CHART ============== */
+function impactChart(){
+  new Chart($("#impactChart"),{
+    type:"bar",
+    data:{
+      labels:["Students","Teachers","Kiosks"],
+      datasets:[{data:[1200,200,40],backgroundColor:["#0b6e4f","#0b6ea3","#fbbf24"]}]
+    },
+    options:{plugins:{legend:{display:false}}}
   });
 }
-
-// render training
-function renderTraining(){
-  content.innerHTML='';
-  const h=document.createElement('h2');
-  h.textContent=translations.training[currentLang];
-  content.appendChild(h);
-  trainings.forEach(t=>{
-    const div=document.createElement('div');
-    div.className='card';
-    div.textContent=`${t.title[currentLang]}`;
-    content.appendChild(div);
-  });
-}
-
-// initial render
-renderLibrary();
+impactChart();
