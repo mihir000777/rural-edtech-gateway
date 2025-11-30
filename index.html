@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Rural EdTech Gateway</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">R-EdTech</div>
+    <div>
+      <h1 id="siteTitle">The Rural EdTech Gateway</h1>
+      <p class="lead" id="siteLead">Sustainable digital learning for remote Indian villages — prototype frontend</p>
+    </div>
+  </header>
+
+  <nav>
+    <button class="btn primary" data-view="library" id="btnLibrary">Digital Library</button>
+    <button class="btn" data-view="training" id="btnTraining">Training & Skills</button>
+    <button class="btn" data-view="mentorship" id="btnMentorship">Mentorship</button>
+    <button class="btn" data-view="sync" id="btnSync">Offline Sync (Admin)</button>
+    <button class="btn" data-view="impact" id="btnImpact">Impact & Partners</button>
+
+    <div class="rightControls">
+      <label for="lang">Language:</label>
+      <select id="lang">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="kn">ಕನ್ನಡ</option>
+      </select>
+      <button class="btn ghost" id="loginBtn">Login</button>
+      <button class="btn ghost" id="themeBtn">Dark Mode</button>
+    </div>
+  </nav>
+
+  <main class="grid">
+    <section id="content"></section>
+    <aside id="rightCol" class="card">
+      <h3 id="statsTitle">Quick Stats</h3>
+      <ul>
+        <li><strong>24%</strong> rural residents with basic digital skills</li>
+        <li><strong>18.47%</strong> rural schools with internet</li>
+        <li><strong>Target:</strong> 25% ↑ high-school completion</li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer id="footer">
+    <p>Prototype for Educational Technology Initiative, Dept. of Rural Development — BMS Institute of Technology and Management</p>
+  </footer>
+</div>
+<script src="js/main.js"></script>
+</body>
+</html>
